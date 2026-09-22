@@ -1,15 +1,16 @@
 [project]
 name = "cronus"
 version = "0.1.0"
-description = "Add your description here"
+description = "This is an entry point for the learning project"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "pydantic>=2.13.4",
+    "typer>=0.27.2",
 ]
 
 [project.scripts]
-cronus = "cronus:main"
+cronus = "cronus:app"
 
 [build-system]
 requires = ["uv_build>=0.12.3,<0.13.0"]
