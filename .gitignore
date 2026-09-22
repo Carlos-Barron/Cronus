@@ -1,0 +1,21 @@
+# Environment & secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*credentials*.json
+*serviceaccount*.json
+.aws/
+.gcloud/
+.ssh/
+*.pfx
+secrets/
+__pycache__/
+venv/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/

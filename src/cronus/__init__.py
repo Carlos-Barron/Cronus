@@ -1,7 +1,6 @@
 import json
 import logging
 from pathlib import Path
-from typing import Optional
 import typer
 from pydantic import BaseModel, ValidationError, Field
 
@@ -35,7 +34,8 @@ def validate_json(
         help="Ruta del archivo JSON a validar.",
         exists=True,
         file_okay=True,
-        readable=True
+        readable=True,
+        dir_okay=False
     )
 ):
 
@@ -50,7 +50,7 @@ def validate_json(
 
         # 5. Validación del esquema con Pydantic
 
-        validated_data = UserSchema(**data)
+        validated_data = UserSchema.model_validate(data)
 
         logging.info("¡Validación exitosa! El esquema coincide.")
         typer.echo(f"🎉 Datos válidos para el usuario: {validated_data.name}")
