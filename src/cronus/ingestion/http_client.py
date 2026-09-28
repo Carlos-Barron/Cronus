@@ -64,22 +64,22 @@ async def fetch_users(
         async with semaphore:
             return await fetch_user(client, user_id)
 
-        return await asyncio.gather(*(with_limit(uid) for uid in user_ids))
+        # return await asyncio.gather(*(with_limit(uid) for uid in user_ids))
 
-    results = await asyncio.gather(
-        *(with_limit(uid) for uid in user_ids),
-        return_exceptions=True
-    )
+        results = await asyncio.gather(
+            *(with_limit(uid) for uid in user_ids),
+            return_exceptions=True
+        )
 
-    ok: list[ApiUser] = []
-    fails: list[tuple[int, BaseException]] = []
-    for user_id, result in zip(user_ids, results, strict=True):
-        if isinstance(result, BaseException):
-            logger.warning("id=%s failed: %s: %s", user_id, type(result).__name__, result)
-            fails.append((user_id, result))
-        else:
-            ok.append(result)
-    return ok, fails
+        ok: list[ApiUser] = []
+        fails: list[tuple[int, BaseException]] = []
+        for user_id, result in zip(user_ids, results, strict=True):
+            if isinstance(result, BaseException):
+                logger.warning("id=%s failed: %s: %s", user_id, type(result).__name__, result)
+                fails.append((user_id, result))
+            else:
+                ok.append(result)
+        return ok, fails
 
 async def ingest(
         user_ids: Sequence[int],

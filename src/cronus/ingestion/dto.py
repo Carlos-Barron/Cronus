@@ -9,7 +9,7 @@ class ApiCompany(BaseModel):
     """ Bloque company del API. """
 
     name: str
-    catch_phase: str = Field(alias="catchPhrase")
+    catch_phrase: str = Field(alias="catchPhrase")
 
 class ApiUser(BaseModel):
     """ Espejo de playload de /users del API. 
