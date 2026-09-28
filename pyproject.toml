@@ -5,12 +5,14 @@ description = "This is an entry point for the learning project"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "httpx>=0.28.1",
+    "pandas>=3.0.6",
     "pydantic>=2.13.4",
     "typer>=0.27.2",
 ]
 
 [project.scripts]
-cronus = "cronus:app"
+cronus = "cronus.cli:app"
 
 [build-system]
 requires = ["uv_build>=0.12.3,<0.13.0"]
@@ -20,5 +22,7 @@ build-backend = "uv_build"
 dev = [
     "mypy>=2.3.0",
     "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "respx>=0.23.1",
     "ruff>=0.16.2",
 ]
