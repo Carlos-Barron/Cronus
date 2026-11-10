@@ -17,7 +17,7 @@ FetchResult = tuple[list[ApiUser], list[tuple[int, BaseException]]]
 logger = logging.getLogger(__name__)
 
 def is_retryable(exc: BaseException) -> bool:
-    """ Timeouts y errores de red si; 5xx y 429; el resto de 4xx no. """
+    """ Timeouts & network errors; 5xx y 429; the rest is about 4xx no. """
     if isinstance(exc, (httpx.TimeoutException, httpx.ConnectError)):
         return True
     if isinstance(exc, httpx.HTTPStatusError):
@@ -43,7 +43,7 @@ async def fetch_user(
                 raise
             wait = base_delay * 2 ** (try_number - 1) + random.uniform(0, 0.1)
             logger.warning(
-                "id=%s try nimber %s/%s failed (%s); retry in %.2fs",
+                "id=%s try number %s/%s failed (%s); retry in %.2fs",
                 user_id, try_number, attempts, type(exc).__name__, wait,
             )
             await asyncio.sleep(wait)
@@ -56,7 +56,7 @@ async def fetch_users(
         *,
         concurrency: int = DEFAULT_CONCURRENCY
 ) -> FetchResult:
-    """ Devuelve (usuarios_ok, fallos). Un id que falla no cancela el resto. """
+    """ Returns (ok, failures). An ID that does not cancels the others. """
 
     semaphore = asyncio.Semaphore(concurrency)
 
@@ -84,7 +84,7 @@ async def ingest(
         *,
         concurrency: int = DEFAULT_CONCURRENCY
 ) -> FetchResult:
-    """ Punto de entrada de la capa de ingestión: Crea el cliente y descarga todo. """
+    """ Ingestion starting point: Creates the client and downloads everything. """
     limits = httpx.Limits(max_connections=concurrency)
     async with httpx.AsyncClient(
         base_url=BASE_URL,
