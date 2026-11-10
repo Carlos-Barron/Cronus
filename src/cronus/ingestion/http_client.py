@@ -55,7 +55,7 @@ async def fetch_users(
         user_ids: Sequence[int],
         *,
         concurrency: int = DEFAULT_CONCURRENCY
-) -> list[ApiUser]:
+) -> FetchResult:
     """ Devuelve (usuarios_ok, fallos). Un id que falla no cancela el resto. """
 
     semaphore = asyncio.Semaphore(concurrency)
@@ -63,8 +63,6 @@ async def fetch_users(
     async def with_limit(user_id: int) -> ApiUser:
         async with semaphore:
             return await fetch_user(client, user_id)
-
-        # return await asyncio.gather(*(with_limit(uid) for uid in user_ids))
 
     results = await asyncio.gather(
         *(with_limit(uid) for uid in user_ids),
