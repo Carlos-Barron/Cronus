@@ -56,6 +56,7 @@ async def test_timeout_failed_retries():
 
 
 @respx.mock
+@pytest.mark.asyncio
 async def test_fetch_users_after_a_fail(api_payload):
     respx.get(f"{BASE_URL}/users/1").mock(
         return_value=httpx.Response(200, json=api_payload)
