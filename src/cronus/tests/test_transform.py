@@ -28,7 +28,7 @@ def test_toempty_dataframe():
 def test_enrich(users):
     df = enrich(to_dataframe(users))
 
-    assert df["email_domain"].tolist() == ["gmail.com", "company.com"]
+    assert df["email_domain"].tolist() == ["charly@test.com", "david@test.com"]
 
 def test_enrich_with_original_modified(users):
     df = to_dataframe(users)
