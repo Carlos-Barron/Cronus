@@ -3,8 +3,8 @@ import time
 
 async def task(n: int) -> int:
     print(f" empieza {n}")
-    #await asyncio.sleep(1)
-    time.sleep(1)
+    await asyncio.sleep(1)
+    #time.sleep(1)
     print(f" termina {n}")
     return n
 

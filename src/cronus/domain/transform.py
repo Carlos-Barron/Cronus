@@ -15,6 +15,7 @@ def to_dataframe(users: Sequence[User]) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=COLUMNS)
 
 FREE_EMAIL_DOMAINS = frozenset({"gmail.com", "hotmail.com", "yahoo.com", "outlook.com"})
+is_free = FREE_EMAIL_DOMAINS
 
 def enrich(df: pd.DataFrame) -> pd.DataFrame:
     """ Agrega columnas derivadas. No modifica el DataFrame recibido. """
@@ -27,11 +28,7 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
         city=city,
         name_length=df["name"].str.len(),
         first_name=df["name"].str.split().str[0],
-        segment=np.select(
-            [domain.isin(FREE_EMAIL_DOMAINS), df["company_name"].str.len() > 10],
-            ["personal", "big_corporate"],
-            default="corporate"
-        )
+        segment=np.where(domain.isin(FREE_EMAIL_DOMAINS), "personal", "corporate")
     )
 
 def users_by_city(df: pd.DataFrame) -> pd.DataFrame:
